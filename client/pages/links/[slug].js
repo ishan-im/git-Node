@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { useState } from "react";
+import { useState , useEffect} from "react";
 
 import axios from "axios";
 import { Fragment } from "react";
@@ -45,6 +45,77 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
   const [skips, setSkip] = useState(0)
   const [size, setSize] = useState(totalLinks)
 
+  const [popular, setPopular] = useState([])
+
+
+  const loadPopular = async() =>{
+
+
+    const response = await axios.get(`http://localhost:8080/api/link/popular/${category.slug}`)
+
+    setPopular(response.data)
+
+  }
+
+
+  useEffect(()=>{
+
+    loadPopular()
+
+  },[])
+
+  
+
+
+  const listOfTrendingLinks = ()=> (
+    
+    popular.map((l,i)=>(
+
+      <div className="row alert alert-secondary p-2" key={i}>
+
+        <div className="col-md-8" onClick={()=> handleClick(l._id) !== null ? (l._id): ''}>
+         <a href={l.url} target="_blank">
+          <h5 className="pt-2">
+            {l.title}
+          </h5>
+          <h6 className="pt-2 text-danger overflow-hidden" style={{fontSize: '12px'}}>
+            {l.url}
+          </h6>
+         </a>
+        </div>
+
+        <div className="col-md-4 pt-2">
+          <span className="pull-right">
+           by {(l.postedBy.name) ? (l.postedBy.name): ''}
+          </span>
+          
+        </div>
+
+
+        <div className="col-md-8">
+
+          <span className="badge text-dark">
+          {l.medium}{` `}{l.type} 
+          </span>
+
+          {l.categories.map((c,i)=>(
+            <span className="badge text-info" key={i}>{c.name}</span>
+          ))}
+
+          
+
+        </div>
+
+        <div className="col-md-4">
+         <span className="bage text-secondary pull-right">{l.clicks} clicks</span>
+        </div>
+
+      </div>
+
+    ))
+
+  )
+
 
   const loadUpdatedLinks = async() =>{
 
@@ -52,7 +123,7 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
 
     const {data} = response
 
-    const {category, links} = data
+    const {links} = data
 
     console.log('from load links func: ', links);
 
@@ -65,7 +136,9 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
 
     const response = await axios.put(`http://localhost:8080/api/click-count/`,{linkId})
 
-    loadUpdatedLinks() 
+    loadUpdatedLinks()
+    
+    loadPopular()
 
   }
 
@@ -167,7 +240,7 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
                 <p className="lead alert alert-secondary pt-4">{category.content}</p>
             </div>
 
-        <div className="col-md-4">
+        <div className="col-md-4 px-5 py-2">
 
            <img src={category.image.url} alt={category.name} style={{width: 'auto', maxHeight: '200px'}}/>
 
@@ -186,9 +259,10 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
           {/* </InfiniteScroll> */}
           </div>
 
-          <div className="col-md-4">
+          <div className="col-md-4 p-5">
             <h2 className="lead">Most popular links in {category.name}</h2>
-            <p>Show popular links</p>
+            
+            {listOfTrendingLinks()}
           </div>
         </div>
         
