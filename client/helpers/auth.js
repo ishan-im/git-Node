@@ -161,3 +161,27 @@ export const logOut = ()=>{
 
 }
 
+
+
+
+export const updateUser = (user, next)=>{
+
+    if(typeof window !== 'undefined'){
+
+        if(localStorage.getItem('user')){
+
+            let auth = JSON.parse(localStorage.getItem('user'))
+
+                auth = user
+
+                localStorage.setItem('user', JSON.stringify(auth))
+
+                next()
+
+        }
+
+    }
+
+
+
+}

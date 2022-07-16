@@ -39,7 +39,7 @@ exports.createLink = (req,res)=>{
 
     link.postedBy = req.auth._id
 
-    console.table({title,url,categories,type,medium,slug,})
+    // console.table({title,url,categories,type,medium,slug,})
 
     //categories
 
@@ -66,9 +66,15 @@ exports.createLink = (req,res)=>{
 
         res.json(data)
 
+
         //find all users in this category
 
+
+        console.log('testing');
+
         User.find({Category: {$in : categories}}).exec((err,user)=>{
+
+            console.log('testing user', user);
 
             if(err){
 
@@ -79,39 +85,40 @@ exports.createLink = (req,res)=>{
                     error: 'Sending email  Failed :('
     
                 })
-
-                Category.find({_id: {$in : categories}}).exec((err,result)=>{
-
-                   data.categories = result 
-
-
-                   for(let i=1; i<user.length; i++){
-
-                    const params = linkPublishedParams(user[i].email, data)
-
-                    const sendEmail = ses.sendEmail(params).promise()
-
-                    sendEmail
-
-                    .then(success => {
-
-                        console.log('Email submitted to ses: ', success);
-
-                        return 
-                    })
-                    .catch(failure=>{
-
-                        console.log('Email submitted to ses failure:( : ', failure);
-
-                        return
-
-                    })
-
-                   }
-
-                })
     
             }
+
+            Category.find({_id: {$in : categories}}).exec((err,result)=>{
+
+                console.log('testing result : ', result);
+
+               data.categories = result 
+
+
+               for(let i=0; i<user.length; i++){
+
+                const params = linkPublishedParams(user[i].email, data)
+
+                const sendEmail = ses.sendEmail(params).promise()
+
+                sendEmail
+                .then(success => {
+
+                    console.log('Email submitted to ses: ', success);
+
+                    return 
+                })
+                .catch(failure=>{
+
+                    console.log('Email submitted to ses failure:( : ', failure);
+
+                    return
+
+                })
+
+               }
+
+            })
 
         })
 

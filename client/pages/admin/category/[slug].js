@@ -58,8 +58,6 @@ const Update = ({token, oldCategory}) =>{
 
     const [content, setContent] = useState(oldCategory.content)
 
-
-
     const {name,buttonText,image,imagePreview,success,error} = state
 
     const [imgaeUploadText, setImageUploadState] = useState('Upload Image')

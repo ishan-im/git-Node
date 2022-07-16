@@ -194,7 +194,7 @@ const Update = ({token, oldLink}) => {
 
           console.log('Link creation error ', err);
 
-          setState({...state, error: err.response.data.error})
+          setState({...state, error:' Link creation failed'})
 
           setButtonText('Update Link')
 

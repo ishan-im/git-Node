@@ -47,3 +47,45 @@ exports.read = (req,res)=>{
     // return res.json(req.profile)
 
 }
+
+
+
+exports.update = (req,res)=>{
+
+    const {name, password, categories} = req.body
+
+    switch(true){
+        
+        case password && password.length <6:
+
+            return res.status(400).json({
+                error: 'Password must be 6 characters long'
+            })
+
+            break;
+
+    }
+
+    User.findOneAndUpdate({_id: req.auth._id}, {name, password, categories}, {new:true}).exec((err,updatedUser)=>{
+
+        if(err){
+
+            console.log('ERR from user update function: ', err);
+
+            return res.status(400).json({
+
+                error:'Could not update User:('
+
+            })
+            
+        }
+
+        updatedUser.hashed_password = undefined
+
+        updatedUser.salt = undefined
+
+        return res.json(updatedUser)
+
+    })
+
+}

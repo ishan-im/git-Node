@@ -63,14 +63,39 @@ const linkPublishedParams = (email, data)=>{
                     Data: `<html>
                                   <h1>New Link Published | gitnode.tech</h1 style="color:red;">
                                   <p>A new link titled <b>${data.title}</b> has been published in the following categories</p>
+
+                                  ${data.categories.map(c => {
+
+                                    return `
+                                    
+                                            <div>
+
+                                                <h2>${c.name}</h2>
+
+                                                <img src="${c.image.url}" alt="${c.image.name}" style="height:50px;"/>
+
+                                                <h3><a href="${process.env.CLIENT_URL}/links/${c.slug}">Check it out</a></h3>
+
+                                            </div>
+
+                                    `
+
+                                  }).join('------------------------')}
+
+
+                                  <br/>
+
+                                  <P>Do not wish to receive further notification?</P>
+                                  <p><b>Unsubscribe here</b></p>
                                  
                             </html>`
                 }
             },
     
             Subject: {
+                
                 Charset: 'UTF-8',
-                Data: 'Complete your registration'  
+                Data: 'New link published!'  
     
             }
     

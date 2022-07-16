@@ -33,3 +33,12 @@ exports.userRegisterValidator =  [
     
 
 
+    exports.userUpdateValidator =  [
+
+        check('name')
+            .not()
+            .isEmpty()
+            .withMessage('Name is required'),
+       
+
+    ];
