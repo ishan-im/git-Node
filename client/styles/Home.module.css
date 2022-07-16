@@ -1,0 +1,28 @@
+.item__link{
+    
+    position: relative;
+    margin: 2rem;
+    padding: 3rem;
+    text-decoration: none;
+    font-size: 1rem;
+    color: black;
+    min-height:3rem;
+    border-radius: 6px;
+    box-shadow: 0 0 6px rgb(0 0 0 /20%);
+    transition:  0.1s linear;
+    width: 25%;
+}
+
+
+.item__link:hover{
+
+    box-shadow :0 0 9px rgb(0 0 0 /25%);
+    transition: 0.3s linear;
+    transform: translateY(-5px);
+}
+
+
+.react__quill:focus{
+
+   box-shadow:0 0 4px #C2DBFE;
+}
