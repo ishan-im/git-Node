@@ -273,3 +273,79 @@ exports.clickCount = (req,res)=>{
     })
 
 }
+
+
+
+exports.popular = (req,res)=>{
+
+    Link.find()
+        .populate('postedBy', 'name')
+        .populate('categories', 'name')
+        .sort({clicks: -1})
+        .limit(3)
+        .exec((err,links)=>{
+
+            if(err){
+
+                return res.status(400).json({
+    
+                    error: 'Link not found'
+    
+                })
+    
+            }
+
+
+
+            res.json(links)
+
+
+
+        })
+
+}
+
+
+
+
+exports.popularInCategory = (req,res)=>{
+
+    const {slug} = req.params
+
+    Category.findOne({slug}).exec((err, category)=>{
+
+        if(err){
+
+            return res.status(400).json({
+
+                error: 'Could not load category'
+
+            })
+
+        }
+
+
+        Link.find({categories: category})
+            .sort({clicks: -1})
+            .limit(3)
+            .exec((err,links)=>{
+
+                if(err){
+
+                    return res.status(400).json({
+        
+                        error: 'Could not load link in category'
+        
+                    })
+        
+                }
+
+
+                res.json(links)
+
+
+            })
+
+    })
+
+}

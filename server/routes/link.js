@@ -20,19 +20,23 @@ const runValidation = require('../validators/validationResult')
 //routes
 
 
-router.post('/link', auth.requireSignIn, auth.authMiddleware, linkValidator.linkCreateValidator, link.createLink)
+router.post('/link', linkValidator.linkCreateValidator, runValidation, auth.requireSignIn, auth.authMiddleware,  link.createLink)
 
 router.post('/links', auth.requireSignIn, auth.adminMiddleware, link.listLink)
 
 router.put('/click-count', link.clickCount)
 
+router.get('/link/popular', link.popular)
+
+router.get('/link/popular/:slug', link.popularInCategory)
+
 router.post('/link/:id', link.readLink)
 
 
 
-router.put('/link/:id',  auth.requireSignIn, auth.authMiddleware, auth.canUpdateDeleteLink, link.updateLink)
+router.put('/link/:id', linkValidator.linkCreateValidator, runValidation, auth.requireSignIn, auth.authMiddleware, auth.canUpdateDeleteLink, link.updateLink)
 
-router.put('/link/admin/:id',  auth.requireSignIn, auth.adminMiddleware, auth.canUpdateDeleteLink, link.updateLink)
+router.put('/link/admin/:id', linkValidator.linkCreateValidator, runValidation, auth.requireSignIn, auth.adminMiddleware, auth.canUpdateDeleteLink, link.updateLink)
 
 router.delete('/link/:id',   auth.requireSignIn, auth.authMiddleware, auth.canUpdateDeleteLink, link.deleteLink)
 

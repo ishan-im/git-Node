@@ -33,11 +33,12 @@ const Create = ({token}) => {
         success:'',
         error:'',
         type:'',
-        medium:''
+        medium:'',
+        buttonText:'Submit Link'
 
     })
 
-    const {title,url,categories,loadedCategories,success,error,type,medium} = state
+    const {title,url,categories,loadedCategories,success,error,type,medium,buttonText} = state
 
 
 
@@ -108,7 +109,7 @@ const Create = ({token}) => {
 
       console.log('all categories >> ',all);
 
-      setState({...state, categories:all, success:'', error: ''})
+      setState({...state, categories:all, success:'', error:''})
 
   }
 
@@ -159,17 +160,17 @@ const Create = ({token}) => {
             url: "",
             success: "Link created successfully!",
             error: "",
-            loadedCategories: [],
             categories: [],
             type: "",
             medium: "",
           });
 
-        }catch(err){
+        }
+        catch(err){
 
           console.log('Link creation error ', err);
 
-          setState({...state, error: error.response.data.error})
+          setState({...state,success: '', error: 'Link creation failed:(', buttonText: 'Submit Link'})
 
         }
 
@@ -306,7 +307,7 @@ const Create = ({token}) => {
 
             <div className="mb-3 col-md-6 offset-md-3 form-group">
               <button disabled={!token} type="submit" className="btn btn-outline-primary btn-sm">
-                {isAuth() || token ? 'Submit Link' : 'Login to post'}
+                {isAuth() || token ? `${buttonText}` : 'Login to post'}
               </button>
             </div>
 

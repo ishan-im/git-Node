@@ -98,7 +98,7 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
                 {l.type}/{l.medium}
               </span>
 
-              {l.categories.map((c,i)=> <span className="badge text-success" key={c._id}>{c.name}</span>)}
+              {l.categories.map((c,i)=> <span className="badge text-success" key={i}>{c.name}</span>)}
 
               
             </div>

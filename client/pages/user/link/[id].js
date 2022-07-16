@@ -190,11 +190,15 @@ const Update = ({token, oldLink}) => {
 
           setButtonText('Updated!')
 
-        }catch(err){
+        }catch(error){
 
-          console.log('Link creation error ', err);
+          console.log('Link creation error ', error);
 
-          setState({...state, error:' Link creation failed'})
+          // const {data} = error.response
+
+          // const {err} = data.error
+
+          setState({...state, error: 'Link update failed'})
 
           setButtonText('Update Link')
 

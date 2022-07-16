@@ -4,6 +4,7 @@ exports.userRegisterValidator =  [
         check('name')
             .not()
             .isEmpty()
+            .isLength({ min: 1 })
             .withMessage('Name is required'),
         check('email')
             .isEmail()
@@ -38,6 +39,7 @@ exports.userRegisterValidator =  [
         check('name')
             .not()
             .isEmpty()
+            .isLength({ min: 1 })
             .withMessage('Name is required'),
        
 

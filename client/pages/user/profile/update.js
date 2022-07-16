@@ -2,7 +2,7 @@ import { Fragment, useState , useEffect} from "react"
 
 import axios from 'axios'
 
-import Router from "next/router";
+import {useRouter} from "next/router";
 
 import { showErrorMessage, showSuccessMessage } from '../../../helpers/alert' 
 
@@ -82,8 +82,15 @@ export const getServerSideProps = async ({req,res}) => {
 }
 
 
+
+
+
+
 const Update = ({user, token}) => {
 
+
+
+    const Router = useRouter()
 
   const [state, setState] = useState({
 
@@ -107,7 +114,7 @@ useEffect(()=>{
 
   loadCategories()
 
-},[])
+},[success])
 
 
 // load categories
@@ -175,7 +182,9 @@ const loadCategories = async ()=>{
     
           });
 
-          typeof window !== 'undefined' && window.location.reload()
+        //   typeof window !== 'undefined' && window.location.reload()
+
+        Router.reload()
 
       })
 
