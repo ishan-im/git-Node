@@ -1,20 +1,28 @@
 import Link from "next/link";
 
+import Head from 'next/head'
+
 import { useState , useEffect} from "react";
+
+import loading from '../../public/static/image/loading.gif'
 
 import axios from "axios";
 import { Fragment } from "react";
 
-import HtmlToReactParser  from 'html-to-react'
+import moment from 'moment';
+
+
 
 import InfiniteScroll from 'react-infinite-scroller';
+
+
 
 
 
 export async function getServerSideProps({req,query}) {
 
     let skip = 0
-    let limit = 2
+    let limit = 3
 
     const response = await axios.post(`http://localhost:8080/api/category/${query.slug}`,{skip,limit})
 
@@ -41,8 +49,9 @@ export async function getServerSideProps({req,query}) {
 const Links = ({query, category,links,totalLinks,skip,limit})=>{
 
   const [allLinks, setAllLinks] = useState(links)
-  const [limits, setLimits] = useState(limit)
-  const [skips, setSkip] = useState(0)
+  
+  const [skipLink, setSkipLink] = useState(skip)
+
   const [size, setSize] = useState(totalLinks)
 
   const [popular, setPopular] = useState([])
@@ -64,7 +73,21 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
 
   },[])
 
+  const stripHTML = data => data.replace(/<\/?[^>]+(>|$)/g, '');
   
+  const head = () =>(
+
+    <Head>
+      <title>{category.name} - gitNode</title>
+      <meta name="description" content={stripHTML(category.content.substring(0,200))}/>
+      <meta property="og:title" content={category.name} />
+      <meta property="og:description" content={category.content.substring(0,160)} />
+      <meta property="og:image:secure_url" content={category.image.url} />
+      <meta property="og:image" content={category.image.url} />
+    </Head>
+
+  )
+
 
 
   const listOfTrendingLinks = ()=> (
@@ -85,8 +108,10 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
         </div>
 
         <div className="col-md-4 pt-2">
+        <span className="pull-right">{moment(l.createdAt).fromNow()}</span>
+        <br/>
           <span className="pull-right">
-           by {(l.postedBy.name) ? (l.postedBy.name): ''}
+           by {(l.postedBy.name)}
           </span>
           
         </div>
@@ -107,6 +132,7 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
         </div>
 
         <div className="col-md-4">
+         
          <span className="bage text-secondary pull-right">{l.clicks} clicks</span>
         </div>
 
@@ -119,7 +145,7 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
 
   const loadUpdatedLinks = async() =>{
 
-    const response = await axios.post(`http://localhost:8080/api/category/${query.slug}`)
+    const response = await axios.post(`http://localhost:8080/api/category/${query.slug}`,{skip: skipLink,limit})
 
     const {data} = response
 
@@ -131,6 +157,7 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
 
 
   }
+
 
   const handleClick = async (linkId) =>{
 
@@ -160,7 +187,7 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
             </div>
 
             <div className="col-md-4 pt-2">
-              <span className="pull-right">{new Date(l.createdAt).toLocaleString()} by {l.postedBy.name} </span>
+              <span className="pull-right">{moment(l.createdAt).fromNow()} by {l.postedBy.name} </span>
               <br />
               <span className="badge text-secondary pull-right">{l.clicks} clicks</span>
             </div>
@@ -182,11 +209,13 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
 
   )
 
+
+
   const loadMore = async () =>{
 
-    let toSkip = skip + limit
+    const toSkip = skipLink + limit
 
-    const response = await axios.post(`http://localhost:8080/api/category/${query.slug}`,{skip: toSkip, limit: limits})
+    const response = await axios.post(`http://localhost:8080/api/category/${query.slug}`,{skip: toSkip, limit})
 
     console.log('from loadmore function: ', response);
 
@@ -198,29 +227,29 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
     setAllLinks([...allLinks,...links])
 
 
-    console.log('allLinks: ', [...allLinks,...links]);
+    console.log('allLinks hello: ', allLinks);
 
-    console.log('response.data.links.length: ', links.length);
+    console.log('response.data.links.length: ', allLinks.length);
 
     setSize(links.length)
 
-    setSkip(toSkip)
+    setSkipLink(toSkip)
 
 
 
   }
 
 
-  const hasMore = size > 0 && size >= limit
+  const hasMore = size > 0 && size >= parseInt(limit)
 
 
   const loadMoreButton = () => {
 
     return(
 
-      size > 0 && size > limit && (
+      size > 0 && size >= limit && (
 
-        <button onClick={loadMore} className="btn btn-outline-primary btn-lg"> Load More</button>
+        <button onClick={loadMore} className="btn btn-outline-primary btn-lg">Load More</button>
 
       )
     )
@@ -230,14 +259,17 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
    return ( 
    
    <Fragment>
-    <div className="container">
+    {head()}
+    <div className="container p-5">
 
         <div className="row ">
 
             <div className="col-md-8">
 
-                <h1 className="display-4 font-weight-bold">{category.name} - URL/Links</h1>
-                <p className="lead alert alert-secondary pt-4">{category.content}</p>
+                <h2 className="display-4 font-weight-bold mb-3">{category.name} - URL/Links</h2>
+                <div className="lead alert alert-secondary pt-4"  dangerouslySetInnerHTML={{__html: category.content}}>
+
+                </div>
             </div>
 
         <div className="col-md-4 px-5 py-2">
@@ -250,13 +282,18 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
 
         <div className="row">
           <div className="col-md-8">
-          {/* <InfiniteScroll  pageStart={0}
+            <img src={require('../../public/static/image/loading.gif')} alt='loading'/>
+          <InfiniteScroll  pageStart={0}
                loadMore={loadMore}
                hasMore={hasMore}
-               loader={<div className="loader" key={0}>Loading ...</div>}> */}
+               loader={<img key={10} className='loader' height={40} width={40} src={loading} alt='loading'/>}
+               >
+
                {listOfLinks()}
 
-          {/* </InfiniteScroll> */}
+          </InfiniteScroll>
+
+          
           </div>
 
           <div className="col-md-4 p-5">
@@ -266,20 +303,11 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
           </div>
         </div>
         
-        {/* <div className="text-center pt-4 pb-5">
-          {loadMoreButton()}
-        </div> */}
+        
 
         <div className="row">
           <div className="col-md-12 text-center">
 
-            {/* <InfiniteScroll  pageStart={0}
-               loadMore={loadMore}
-               hasMore={ size > 0 && size >= limit &&}
-               loader={<div className="loader" key={0}>Loading ...</div>}
-               /> */}
-              
-            
 
           </div>
         </div>

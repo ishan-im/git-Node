@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import { getCookie } from "../../helpers/auth";
 
+import moment from "moment";
 
 import Dashboard from "../../components/Dashboard";
 
@@ -147,7 +148,7 @@ const User = ({user, userLinks, token}) =>{
 
             <div className="col-md-4 pt-2">
 
-                <span className="pull-right">{link.createdAt} by {link.postedBy.name}</span>
+                <span className="pull-right">{moment(link.createdAt).fromNow()} by {link.postedBy.name}</span>
 
             </div>
 
@@ -173,7 +174,7 @@ const User = ({user, userLinks, token}) =>{
                     </a>
                 </Link>
 
-                <span onClick={(e)=> confirmDelete(e, link._id)} className="badge text-danger pull-right">Delete</span>
+                <span onClick={(e)=> confirmDelete(e, link._id)} style={{cursor:'pointer'}} className="badge text-danger pull-right">Delete</span>
             </div>
 
         </div>

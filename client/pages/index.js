@@ -1,27 +1,39 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 
 import axios from 'axios'
 
 import Link from 'next/link'
 
+import Head from 'next/head'
+
 import Image from 'next/image'
 
+import moment from 'moment'
+
 import classes from '../styles/Home.module.css'
+
+import {GrCode} from 'react-icons/gr'
 
 
 export const getServerSideProps = async ({req,res}) => {
 
-  const response = await  axios.get(`http://localhost:8080/api/categories`)
+  let limit = 4;
+
+  let skip = 0;
+
+  const response = await  axios.post(`http://localhost:8080/api/categorieslist`,{skip, limit})
 
   console.log("from home ssr response : ", response);
  
   const {data} = response
 
+  const noOfCategory = data.length
+
 
   return {
 
-    props: {data}
+    props: {data,limit,skip,noOfCategory}
 
   }
 
@@ -29,34 +41,93 @@ export const getServerSideProps = async ({req,res}) => {
 
 
 
-export default function Home({data}) {
+export default function Home({data,limit,skip,noOfCategory}) {
+
+
+  const head = () =>(
+
+    <Head>
+      <title>gitNode - Learn-Share-Grow </title>
+      <meta name="description" content='Find best programming course online in gitNode. Learn-Share & Grow'/>
+      <meta property="og:title" content='Find best programming course online in gitNode. Learn-Share & Grow' />
+      <meta property="og:description" content='Find best programming course online in gitNode.' />
+      {/* <meta property="og:image:secure_url" content={category.image.url} />
+      <meta property="og:image" content={category.image.url} /> */}
+    </Head>
+
+  )
+
+
+  const [category, setCategory] = useState(data)
+
+  const [skipCategory, setSkipCategory] = useState(skip)
+
+  const [size,setSize] = useState(noOfCategory)
+
+
+  const loadMore = async() =>{
+
+    const toSkip =  skipCategory + limit
+
+    const response =  await  axios.post(`http://localhost:8080/api/categorieslist`,{skip: toSkip, limit})
+
+    console.log("loadmore func post response : ", response);
+ 
+     const {data} = response
+
+     setCategory([...category,...data])
+
+     
+
+     console.log('from loadmore all category: ', category, ' skip: ', toSkip);
+
+     setSize(data.length)
+
+     setSkipCategory(toSkip)
+
+  }
+
+
+  
+
+  const loadMoreButton = () => {
+
+    return(
+
+      size > 0 && size >= limit && (
+
+        <button onClick={loadMore} className="btn btn-outline-primary btn-lg"> Load More Category</button>
+
+      )
+    )
+
+  }
 
 
 
-  const listOfCategories = () => data.map((c,i)=>{
+
+  const listOfCategories = () => category.map((c,i)=>{
 
     return (
 
-      <Link href={`/links/${c.slug}`} key={c._id}>
-        <a
-          className={` col-md-6  ${classes.item__link}`}
-         
-        >
+      <Link href={`/links/${c.slug}`} key={i}>
+
+        <a className={` col-md-4  ${classes.item__link}`}>
           
             <div className="row" >
-              <div className="col-md-4" >
-                <img className="img-fluid" src={c.image.url} alt={c.slug} />
+              <div className="col-3" >
+                <img className='img-fluid'  src={c.image.url} alt={c.slug} />
               </div>
 
               <div
-                key={c.name}
-                 className="col-md-8"
+                
+                 className="col-5"
                  style={{
                   display:'flex',
-                  alignItems:'center',
+                  alignItems:'center'
                  }}
                  >
-                <p key={c._id}>{c.name}</p>
+                <p className={classes.paragraph} key={c._id}>{c.name}</p>
               </div>
             </div>
           
@@ -115,6 +186,8 @@ const handleClick = async(id) =>{
         </div>
 
         <div className="col-md-4 pt-2">
+        <span className="pull-right">{moment(l.createdAt).fromNow()}</span>
+        <br/>
           <span className="pull-right">
            by {(l.postedBy.name) ? (l.postedBy.name): ''}
           </span>
@@ -125,11 +198,11 @@ const handleClick = async(id) =>{
         <div className="col-md-8">
 
           <span className="badge text-dark">
-          {l.medium}{` `}{l.type} 
+          {l.medium}{` / `}{l.type} 
           </span>
 
           {l.categories.map((c,i)=>(
-            <span className="badge text-info" key={i}>{c.name}</span>
+            <span className="badge text-success" key={i}>{c.name}</span>
           ))}
 
           
@@ -147,17 +220,33 @@ const handleClick = async(id) =>{
   )
 
   return (
-    
-      <div className='container p-3'>
-       
-       <div className="row">
+    <Fragment>
 
+      {head()}
+
+      <div className="container p-5">
+
+      <h3 className='text-center mt-3 p-3'>Find the Best <GrCode/>Programming Courses and Tutorial</h3>
+    
+      <div className='container mt-4 p-5 '>
+
+       
+       <div className={`container ${classes.container__placement}`}>
+       <div className="row">
+        
         {listOfCategories()}
+       
+       </div>
 
        </div>
 
+       <div className="text-center mt-5">
+          {loadMoreButton()}
+        </div>
 
-       <div className="row">
+      <div className="container mt-5">
+
+       <div className="row ">
 
         <h2 className="font-weight-bold pb-3 text-center">Trending Links</h2>
         <div className="col-md-12 overflow-hidden">
@@ -165,9 +254,12 @@ const handleClick = async(id) =>{
           {listOfTrendingLinks()}
 
         </div>
+        </div>
        </div>
-
+       </div>
       </div>
+
+      </Fragment>
   )
 
 }

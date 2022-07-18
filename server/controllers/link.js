@@ -138,9 +138,11 @@ exports.listLink = (req,res)=>{
     Link.find({})
     .populate('postedBy', 'name')
     .populate('categories', 'name, slug')
-    .sort({createdAt: -1})
+    .sort({createdAt: -1,
+        _id : 1})
     .skip(skiP)
     .limit(limiT)
+    
     .exec((err,data)=>{
 
         if(err){
@@ -326,6 +328,8 @@ exports.popularInCategory = (req,res)=>{
 
 
         Link.find({categories: category})
+            .populate('postedBy', 'name')
+            .populate('categories', 'name')
             .sort({clicks: -1})
             .limit(3)
             .exec((err,links)=>{

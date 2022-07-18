@@ -20,7 +20,7 @@ export async function getServerSideProps({req}) {
     const token = getCookie('token', req)
 
     let skip = 0
-    let limit = 2
+    let limit = 3
 
     const response = await axios.post(`http://localhost:8080/api/links/`,{skip,limit},{
 
@@ -56,11 +56,12 @@ export async function getServerSideProps({req}) {
   }
 
 
+
+
 const Read = ({data,totalLinks,skip,limit, token})=>{
 
   const [allLinks, setAllLinks] = useState(data)
-  const [limits, setLimits] = useState(limit)
-  const [skips, setSkip] = useState(0)
+  const [skips, setSkip] = useState(skip)
   const [size, setSize] = useState(totalLinks)
 
   const handleDelete = async (id) =>{
@@ -140,11 +141,13 @@ const Read = ({data,totalLinks,skip,limit, token})=>{
 
               {l.categories.map((c,i)=> <span className="badge text-success" key={i}>{c.slug}</span>)}
 
-              <span onClick={(e)=> confirmDelete(e,l._id)} className="badge text-danger pull-right">Delete</span>
+              
               
               <Link href={`/user/link/${l._id}`}>
                   <a><span className="badge text-warning pull-right">Update</span></a>
               </Link>
+
+              <span onClick={(e)=> confirmDelete(e,l._id)} style={{cursor: 'pointer'}} className="badge text-danger pull-right">Delete</span>
             </div>
         </div>
       )

@@ -22,6 +22,8 @@ router.post('/category', register.requireSignIn, register.adminMiddleware, categ
 
 router.get('/categories', category.list)
 
+router.post('/categorieslist', category.listCategory)
+
 router.post('/category/:slug', category.read)
 
 router.put('/category/:slug', register.requireSignIn, register.adminMiddleware, category.update)

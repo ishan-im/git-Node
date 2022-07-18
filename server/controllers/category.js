@@ -222,7 +222,39 @@ exports.createCategory = (req,res)=>{
 
 exports.list = (req,res)=>{
 
-    Category.find({}).exec((err,data)=>{
+    
+    Category.find({})
+            .exec((err,data)=>{
+
+        if(err){
+
+            console.log(err);
+
+            return res.status(400).json({
+                error: 'category could not load :('
+            })
+
+        }
+        
+        console.log("category data server: ",data);
+        res.json(data);
+    })
+    
+}
+
+
+
+exports.listCategory = (req,res)=>{
+
+    let categoryLimit = (req.body.limit) ? parseInt(req.body.limit) : 3
+
+    let categorySkip = (req.body.skip) ? parseInt(req.body.skip) : 0
+
+    Category.find({})
+            .skip(categorySkip)
+            .limit(categoryLimit)
+            .sort({_id: 1})
+            .exec((err,data)=>{
 
         if(err){
 
@@ -245,9 +277,12 @@ exports.read = (req,res)=>{
 
     const {slug} = req.params
 
-    let limiT = (req.body.limit) ? parseInt(req.body.limit) : 10
+    
+    let categoryLimit = (req.body.limit) ? parseInt(req.body.limit) : 5
 
-    let skiP = (req.body.skip) ? parseInt(req.body.skip) : 0
+    let categorySkip = (req.body.skip) ? parseInt(req.body.skip) : 0
+
+    console.log(categoryLimit, categorySkip);
 
 
     Category.findOne({slug})
@@ -263,14 +298,18 @@ exports.read = (req,res)=>{
             })
         }
 
+        // const totalDoc = Link.find({categories: category}).count();
+
+        // console.log('total collection: ', totalDoc);
+
         // res.json(category)
 
         Link.find({categories: category})
         .populate('postedBy', '_id name userName')
         .populate('categories', 'name')
-        .sort({createdAt: -1})
-        .limit(limiT)
-        .skip(skiP)
+        .sort({createdAt: -1, _id: 1})
+        .skip(categorySkip)
+        .limit(categoryLimit)
         .exec((err, links)=>{
 
             if(err){

@@ -4,7 +4,7 @@ const nextConfig = {
 
   publicRuntimeConfig:{
 
-    APP_NAME: 'GIT-NODE',
+    APP_NAME: 'gitNode',
     API:'http://localhost:8080',
     PRODUCTION: false,
     DOMAIN: 'http://localhost:3000',

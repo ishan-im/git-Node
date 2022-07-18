@@ -1,28 +1,63 @@
 .item__link{
     
     position: relative;
-    margin: 2rem;
-    padding: 3rem;
+    margin: 10px;
+    padding:20px;
     text-decoration: none;
-    font-size: 1rem;
-    color: black;
-    min-height:3rem;
+    min-height:75px;
     border-radius: 6px;
     box-shadow: 0 0 6px rgb(0 0 0 /20%);
     transition:  0.1s linear;
-    width: 25%;
+    /* width: 25%; */
 }
 
+
+.paragraph{
+
+    color: #383838;
+    font-size: 16px!important;
+    font-weight: 400!important;
+}
 
 .item__link:hover{
 
     box-shadow :0 0 9px rgb(0 0 0 /25%);
     transition: 0.3s linear;
-    transform: translateY(-5px);
+    transform: translateY(-2px);
 }
 
 
 .react__quill:focus{
 
-   box-shadow:0 0 4px #C2DBFE;
+   border:0 0 4px #C2DBFE;
+}
+
+
+@media only screen and (min-width: 768px){
+
+
+    .item__link{
+
+        width: 25%;
+
+    }
+
+    .container__placement{
+
+        position: relative;
+        margin-left: 8rem;
+    }
+
+}
+
+
+
+@media only screen and (min-width: 767px) and (max-width: 990px){
+
+    .container__placement{
+
+        position: relative;
+        margin-left: 3rem;
+    }
+
 }

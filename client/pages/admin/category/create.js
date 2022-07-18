@@ -8,11 +8,9 @@ import Resizer from "react-image-file-resizer";
 
 // import TextareaAutosize from 'react-textarea-autosize';
 
-const ReactQuill = dynamic(() => import('react-quill'), {
-
+const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
-
-})
+});
 
 
 import 'react-quill/dist/quill.bubble.css';
@@ -210,7 +208,7 @@ const Create = ({token}) =>{
 
               <ReactQuill
                 onChange={(e)=> handleContent(e)}
-                value={content}
+                defaultValue={content}
                 className={`form-control ${classes.react__quill}`}
                 placeholder="Write Your Content"
                 theme="bubble"
