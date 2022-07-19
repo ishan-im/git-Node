@@ -18,6 +18,8 @@ export const getServerSideProps = async ({req,res}) => {
     console.log(token);
 
     let user = null
+
+
     
 
     if(token){
@@ -142,6 +144,7 @@ const loadCategories = async ()=>{
     });
   };
 
+  
   const handleSubmit = async (e) =>{
 
     e.preventDefault();

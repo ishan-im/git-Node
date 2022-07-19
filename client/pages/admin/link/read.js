@@ -4,6 +4,8 @@ import Router from "next/router";
 
 import { useState } from "react";
 
+import moment from "moment";
+
 import axios from "axios";
 import { Fragment } from "react";
 
@@ -38,9 +40,7 @@ export async function getServerSideProps({req}) {
 
     console.log('data: ', data);
 
-    // const { links} = data
-
-    // const totalLinks = Object.keys(data).length
+    
 
     const totalLinks = data.length
 
@@ -61,8 +61,10 @@ export async function getServerSideProps({req}) {
 const Read = ({data,totalLinks,skip,limit, token})=>{
 
   const [allLinks, setAllLinks] = useState(data)
-  const [skips, setSkip] = useState(skip)
+  const [skipLink, setSkipLink] = useState(skip)
   const [size, setSize] = useState(totalLinks)
+
+
 
   const handleDelete = async (id) =>{
 
@@ -78,7 +80,7 @@ const Read = ({data,totalLinks,skip,limit, token})=>{
 
       console.log('LINK delete success: ', response);
 
-    //  Router.replace('/admin/link/read') 
+    
 
     typeof window !== 'undefined' && window.location.reload()
 
@@ -125,16 +127,19 @@ const Read = ({data,totalLinks,skip,limit, token})=>{
               </a>
             </div>
 
-            {/* {new Date(l.createdAt).toLocaleString()} */}
+            
 
             <div className="col-md-4 pt-2">
-              <span className="pull-right"> by {l.postedBy.name} </span>
+            <span className="pull-right">{moment(l.createdAt).fromNow()}</span>
               <br />
-              <span className="badge text-secondary pull-right">{l.clicks} clicks</span>
-            </div>
+              <span className="pull-right">
+           by {(l.postedBy.name) ? (l.postedBy.name): ''}
+            </span>
+           </div>
 
             <div className="col-md-12">
 
+                <div className="col-md-8">
               <span className="badge text-dark">
                 {l.type}/{l.medium}
               </span>
@@ -148,7 +153,15 @@ const Read = ({data,totalLinks,skip,limit, token})=>{
               </Link>
 
               <span onClick={(e)=> confirmDelete(e,l._id)} style={{cursor: 'pointer'}} className="badge text-danger pull-right">Delete</span>
-            </div>
+              </div>
+
+              <div className="col-md-4">
+              <span className="bage text-secondary pull-right">{l.clicks} clicks</span>
+             </div>
+
+              </div>
+             
+            
         </div>
       )
 
@@ -158,9 +171,9 @@ const Read = ({data,totalLinks,skip,limit, token})=>{
 
   const loadMore = async () =>{
 
-    let toSkip = skip + limit
+    const toSkip = skipLink + limit
 
-    const response = await axios.post(`http://localhost:8080/api/links/`,{skip: toSkip, limit: limits},{
+    const response = await axios.post(`http://localhost:8080/api/links/`,{skip: toSkip, limit},{
 
         headers: {
 
@@ -186,7 +199,7 @@ const Read = ({data,totalLinks,skip,limit, token})=>{
 
     setSize(data.length)
 
-    setSkip(toSkip)
+    setSkipLink(toSkip)
 
 
 
@@ -212,39 +225,32 @@ const Read = ({data,totalLinks,skip,limit, token})=>{
    return ( 
    
    <Fragment>
-    <div className="container">
+    <div className="container p-5">
 
         <div className="row ">
 
-            <div className="col-md-12">
+            <div className="col-md-12 p-3">
 
-                <h1 className="display-4 font-weight-bold text-center">All - URL/Links</h1>
+                <h2 className="display-4 font-weight-bold text-center">All - URL/Links</h2>
                
             </div>
 
-        {/* <div className="col-md-4">
-
-           <img src={category.image.url} alt={category.name} style={{width: 'auto', maxHeight: '200px'}}/>
-
-        </div> */}
+       
    
         </div>
 
         <div className="row">
           <div className="col-md-12">
-          {/* <InfiniteScroll  pageStart={0}
+          <InfiniteScroll  pageStart={0}
                loadMore={loadMore}
                hasMore={size>0 && size >= limit}
-               loader={<div className="loader" key={0}>Loading ...</div>}> */}
+               loader={<div className="loader" key={0}>Loading ...</div>}>
                {listOfLinks()}
 
-          {/* </InfiniteScroll> */}
+          </InfiniteScroll>
           </div>
 
-          {/* <div className="col-md-4">
-            <h2 className="lead">Most popular links in {category.name}</h2>
-            <p>Show popular links</p>
-          </div> */}
+          
         </div>
         
         
@@ -252,16 +258,6 @@ const Read = ({data,totalLinks,skip,limit, token})=>{
         <div className="row">
           <div className="col-md-12 text-center">
 
-            {/* <InfiniteScroll  pageStart={0}
-               loadMore={loadMore}
-               hasMore={ size > 0 && size >= limit &&}
-               loader={<div className="loader" key={0}>Loading ...</div>}
-               /> */}
-              
-              <div className="text-center pt-4 pb-5">
-                
-          {loadMoreButton()}
-        </div>
 
           </div>
         </div>

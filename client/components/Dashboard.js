@@ -9,7 +9,7 @@ const Dashboard = ({userName, role}) => {
 
             <div className={classes.card}>
         <div className={classes.card__img}>
-            <img src="https://via.placeholder.com/90x90.png?text=git+Node" alt="nhan"/>
+            <img src={`https://via.placeholder.com/90x90.png/293462/FFFFFF?text=${userName}`} alt={userName}/>
         </div>
         <div className={classes.card__name}>
             <h2>{userName}</h2>

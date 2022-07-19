@@ -21,6 +21,7 @@ const runValidation = require('../validators/validationResult')
 
 
 router.post('/link', linkValidator.linkCreateValidator, runValidation, auth.requireSignIn, auth.authMiddleware,  link.createLink)
+router.post('/link', linkValidator.linkCreateValidator, runValidation, auth.requireSignIn, auth.adminMiddleware,  link.createLink)
 
 router.post('/links', auth.requireSignIn, auth.adminMiddleware, link.listLink)
 
@@ -34,12 +35,12 @@ router.post('/link/:id', link.readLink)
 
 
 
-router.put('/link/:id', linkValidator.linkCreateValidator, runValidation, auth.requireSignIn, auth.authMiddleware, auth.canUpdateDeleteLink, link.updateLink)
+router.put('/link/:id', linkValidator.linkUpdateValidator, runValidation, auth.requireSignIn, auth.authMiddleware, auth.canUpdateDeleteLink, link.updateLink)
 
-router.put('/link/admin/:id', linkValidator.linkCreateValidator, runValidation, auth.requireSignIn, auth.adminMiddleware, auth.canUpdateDeleteLink, link.updateLink)
+router.put('/link/admin/:id', linkValidator.linkUpdateValidator, runValidation, auth.requireSignIn, auth.adminMiddleware,  link.updateLink)
 
 router.delete('/link/:id',   auth.requireSignIn, auth.authMiddleware, auth.canUpdateDeleteLink, link.deleteLink)
 
-router.delete('/link/admin/:id', auth.requireSignIn, auth.adminMiddleware, auth.canUpdateDeleteLink, link.deleteLink)
+router.delete('/link/admin/:id', auth.requireSignIn, auth.adminMiddleware,  link.deleteLink)
 
 module.exports = router

@@ -131,17 +131,16 @@ exports.createLink = (req,res)=>{
 
 exports.listLink = (req,res)=>{
 
-    let limiT = (req.body.limit) ? parseInt(req.body.limit) : 10
+    let linkLimit = (req.body.limit) ? parseInt(req.body.limit) : 10
 
-    let skiP = (req.body.skip) ? parseInt(req.body.skip) : 0
+    let linkSkip = (req.body.skip) ? parseInt(req.body.skip) : 0
 
     Link.find({})
     .populate('postedBy', 'name')
     .populate('categories', 'name, slug')
-    .sort({createdAt: -1,
-        _id : 1})
-    .skip(skiP)
-    .limit(limiT)
+    .sort({createdAt: -1,  _id : 1})
+    .skip(linkSkip)
+    .limit(linkLimit)
     
     .exec((err,data)=>{
 

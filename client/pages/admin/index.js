@@ -5,6 +5,7 @@ import { Fragment } from "react";
 import { getCookie } from "../../helpers/auth";
 
 import Link from 'next/link'
+import classes from '../../components/Dashboard.module.css'
 
 
 
@@ -33,9 +34,9 @@ export const getServerSideProps = async ({req,res}) => {
 
             })
 
-            user = response.data
+            user = response.data.user
 
-            console.log(user);
+            console.log('admin data: ',user);
 
         }catch(error){
 
@@ -77,13 +78,62 @@ export const getServerSideProps = async ({req,res}) => {
 
 
 const Admin = ({user}) =>{
+
+
+    const dashBoard = ()=>
+
+        (
+        <div className={classes.body}>
+
+            <div className={classes.card} style={{height:'36rem', width:'25rem'}}>
+        <div className={classes.card__img}>
+            <img src={`https://via.placeholder.com/90x90.png/293462/FFFFFF?text=${user.name}`} alt={user.name}/>
+        </div>
+        <div className={classes.card__name}>
+            <h2>{user.name}</h2>
+        </div>
+        <div className={classes.card__job}>
+            <span>{user.role}</span>
+        </div>
+        
+        <div className={classes.card__btn}>
+            <Link href='/user/profile/update'>
+            <button className={classes.card__btn_contact}>Update Profile</button>
+            </Link>
+
+            <Link href='/user/link/create'>
+            <button className={classes.card__btn_contact}>Create Link</button>
+            </Link>
+
+            <Link href='/admin/category/create'>
+                                        <button className={classes.card__btn_contact}>Create Category</button>   
+                                        </Link>
+
+                                        <Link href='/admin/category/read'>
+                                        <button className={classes.card__btn_contact}>All Categories</button>
+                                    </Link>
+
+                                    <Link href='/admin/link/read'>
+                                        <button className={classes.card__btn_contact}>All Links</button>
+                                    </Link>
+        </div>
+    </div>
+
+        </div>
+    )
+
+
+
+
+
+
     return (
-                <div className="container-fluid ">
-                    <h1>Admin Dashboard</h1>
+                <div className="container p-5">
+                    <h1 className="text-center">{user.name}'s Dashboard</h1>
                     <br/>
 
                     <div className="row container">
-                        <div className="col-md-4">
+                        {/* <div className="col-md-4">
                             <ul className="nav flex-item">
                                 <li className="nav-item">
                                     <Link href='/admin/category/create'>
@@ -106,7 +156,11 @@ const Admin = ({user}) =>{
                         </div>
                         <div className="col-md-8"></div>
                     </div>
-                  <div></div>
+                  <div> */}
+
+                  {dashBoard()}
+
+                  </div>
                 </div>
     )
 }

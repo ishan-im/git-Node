@@ -282,7 +282,7 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
 
         <div className="row">
           <div className="col-md-8">
-            <img src={require('../../public/static/image/loading.gif')} alt='loading'/>
+            
           <InfiniteScroll  pageStart={0}
                loadMore={loadMore}
                hasMore={hasMore}

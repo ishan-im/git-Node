@@ -112,20 +112,16 @@ export default function Home({data,limit,skip,noOfCategory}) {
 
       <Link href={`/links/${c.slug}`} key={i}>
 
-        <a className={` col-md-4  ${classes.item__link}`}>
+        <a className={` col-lg-4 col-md-6  ${classes.item__link}`}>
           
             <div className="row" >
-              <div className="col-3" >
-                <img className='img-fluid'  src={c.image.url} alt={c.slug} />
+              <div className='col-3'>
+                <img className={` ${classes.image}`}  src={c.image.url} alt={c.slug} />
               </div>
 
               <div
-                
-                 className="col-5"
-                 style={{
-                  display:'flex',
-                  alignItems:'center'
-                 }}
+              className='col-5'
+                 
                  >
                 <p className={classes.paragraph} key={c._id}>{c.name}</p>
               </div>
@@ -224,15 +220,17 @@ const handleClick = async(id) =>{
 
       {head()}
 
-      <div className="container p-5">
+      <div className="container ">
+
+      <div className='container-fluid p-5'>
 
       <h3 className='text-center mt-3 p-3'>Find the Best <GrCode/>Programming Courses and Tutorial</h3>
     
-      <div className='container mt-4 p-5 '>
+      <div className='container-fluid mt-4 '>
 
        
        <div className={`container ${classes.container__placement}`}>
-       <div className="row">
+       <div className={`row ${classes.category__list}`}>
         
         {listOfCategories()}
        
@@ -257,6 +255,7 @@ const handleClick = async(id) =>{
         </div>
        </div>
        </div>
+      </div>
       </div>
 
       </Fragment>

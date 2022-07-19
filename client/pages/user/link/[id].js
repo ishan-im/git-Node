@@ -15,7 +15,8 @@ export const getServerSideProps = async ({req,query}) => {
 
   const token = getCookie('token', req)
 
-  console.log("From serverside props: ",token);
+
+  console.log("From serverside props: ",token, 'id:', query.id);
 
   
   const response = await axios.post(`http://localhost:8080/api/link/${query.id}`)
@@ -24,7 +25,7 @@ export const getServerSideProps = async ({req,query}) => {
 
   console.log('data from [id]: ', data);
 
-//   const {link} = data
+
 
   return {props: {token, oldLink : data}}
 
@@ -123,6 +124,8 @@ const Update = ({token, oldLink}) => {
 
       setState({...state, categories:all, success:'', error: ''})
 
+      setButtonText('Update Link')
+
   }
 
   // radio type
@@ -130,6 +133,7 @@ const Update = ({token, oldLink}) => {
   const handleTypeClick = (e)=> {
 
       setState({...state, type: e.target.value, success:'',error:''})
+      setButtonText('Update Link')
 
   }
 
@@ -139,6 +143,7 @@ const Update = ({token, oldLink}) => {
   const handleMediumClick = (e)=> {
 
       setState({...state, medium: e.target.value, success:'',error:''})
+      setButtonText('Update Link')
 
   }
 
@@ -165,7 +170,7 @@ const Update = ({token, oldLink}) => {
 
         try{
 
-          const response = axios.put( dynamicLink, {title,url,categories,type,medium},{
+          const response = await axios.put( dynamicLink, {title,url,categories,type,medium},{
 
             headers:{
 
@@ -181,7 +186,7 @@ const Update = ({token, oldLink}) => {
           setState({
             ...state,
             title:   response.data.title,
-            url: "",
+            url: response.data.url,
             success: "Link updated successfully!",
             error: "",
             loadedCategories: [],
@@ -200,7 +205,7 @@ const Update = ({token, oldLink}) => {
 
           // const {err} = data.error
 
-          setState({...state, error: 'Link update failed'})
+          setState({...state, error: error.response.data.error})
 
           setButtonText('Update Link')
 

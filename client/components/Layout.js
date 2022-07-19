@@ -141,13 +141,27 @@ const Layout = ()=>{
           
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+
+            {isAuth() &&
+            (<ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
                 <Link href="/user/link/create">
                   <a className="nav-link text-white"><FaPlus/> Submit Tutorial Link</a>
                 </Link>
               </li>
-            </ul>
+            </ul>)
+            }
+
+          {!isAuth() &&
+            (<ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <Link href="/user/create">
+                  <a className="nav-link text-white"><FaPlus/> Submit Tutorial Link</a>
+                </Link>
+              </li>
+            </ul>)
+            }
+
 
             <form className="d-flex" role="search">
               <input
@@ -167,10 +181,10 @@ const Layout = ()=>{
               <Link href="/user">
                 <a>
                   <img
-                    src="https://via.placeholder.com/90x90.png?text=git+Node"
+                    src={`https://via.placeholder.com/90x90.png/293462/FFFFFF?text=${isAuth().name}`}
                     alt={isAuth().name}
-                    width="32"
-                    height="32"
+                    width="40"
+                    height="40"
                     className={`rounded-circle ${classes.margin__image}`}
                   />
                 </a>
@@ -181,10 +195,10 @@ const Layout = ()=>{
               <Link href="/admin">
                 <a>
                   <img
-                    src="https://via.placeholder.com/90x90.png?text=git+Node"
+                    src={`https://via.placeholder.com/90x90.png/293462/FFFFFF?text=${isAuth().name}`}
                     alt={isAuth().name}
-                    width="32"
-                    height="32"
+                    width="40"
+                    height="40"
                     className={`rounded-circle ${classes.margin__image}`}
                   />
                 </a>

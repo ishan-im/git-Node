@@ -3,24 +3,16 @@ import { useState,useEffect, Fragment } from "react"
 import axios from "axios"
 
 
-import {isAuth, getCookie} from '../../../helpers/auth'
+import {isAuth} from '../../helpers/auth'
 
-import { showErrorMessage,showSuccessMessage } from "../../../helpers/alert"
-
-
-
-export const getServerSideProps = async ({req,res}) => {
-
-  const token = getCookie('token', req)
-
-  console.log("From serverside props: ",token);
-
-  return {props: {token}}
-
-}
+import { showErrorMessage,showSuccessMessage } from "../../helpers/alert"
 
 
-const Create = ({token}) => {
+
+
+
+
+const Create = () => {
 
     //state
 
@@ -131,57 +123,6 @@ const Create = ({token}) => {
   }
 
 
-
-
-    //submit link to backend
-
-    const handleSubmit = async (e)=>{
-
-        e.preventDefault();
-
-        // console.table({title,url,type,medium,categories})
-
-        try{
-
-          const response = await axios.post('http://localhost:8080/api/link', {title,url,categories,type,medium},{
-
-            headers:{
-
-              Authorization : `Bearer ${token}`
-
-            }
-
-
-          })
-
-          console.log('response from create link: ',response);
-
-          setState({
-            ...state,
-            title: "",
-            url: "",
-            success: 'Link Created Successfully!',
-            error: "",
-            categories: [],
-            type: "",
-            medium: "",
-            buttonText: 'Link Created!'
-          });
-
-        }
-        catch(error){
-
-          console.log('Link creation error ', error);
-
-          setState({...state,success: '', error: error.response.data.error, buttonText: 'Submit Link'})
-
-        }
-
-
-    }
-
-
-
    
 
     const showTypes = () =>{
@@ -274,7 +215,7 @@ const Create = ({token}) => {
     const submitLinkForm  = () => {
 
      return (  
-       <form onSubmit={handleSubmit}>
+       <form>
 
             <div className="mb-3 form-group offset-md-3">
               <label htmlFor="exampleFormControlInput1" className="form-label">
@@ -309,8 +250,8 @@ const Create = ({token}) => {
             </div>
 
             <div className="mb-3 col-md-6 offset-md-3 form-group">
-              <button disabled={!token} type="submit" className="btn btn-outline-primary btn-sm">
-                {isAuth() || token ? `${buttonText}` : 'Login to post'}
+              <button disabled={!isAuth()} type="submit" className="btn btn-outline-primary btn-sm">
+                {isAuth() ? `${buttonText}` : 'Login to post'}
               </button>
             </div>
 
