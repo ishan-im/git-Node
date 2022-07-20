@@ -86,7 +86,7 @@ const linkPublishedParams = (email, data)=>{
                                   <br/>
 
                                   <P>Do not wish to receive further notification?</P>
-                                  <p><b>Unsubscribe here</b></p>
+                                  <p><b><a href="http://localhost:3000/user/profile/update">Unsubscribe here (Uncheck the category you don't want) </a></b></p>
                                  
                             </html>`
                 }
@@ -106,3 +106,38 @@ const linkPublishedParams = (email, data)=>{
 }
 
 module.exports = linkPublishedParams
+
+
+
+// const forgotPasswordEmailParams = (email, token)=>{
+
+//     return {
+//         Source: process.env.EMAIL_FROM,
+//         Destination: {
+//             ToAddresses: [email]
+//         },
+//         ReplyToAddresses: [process.env.EMAIL_FROM],
+//         Message: {
+//             Body: {
+//                 Html: {
+//                     Charset: 'UTF-8',
+//                     Data: `
+//                         <html>
+//                             <h1>Reset Password Link</h1>
+//                             <p>Please use the following link to reset your password:</p>
+//                             <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+//                         </html>
+//                     `
+//                 }
+//             },
+//             Subject: {
+//                 Charset: 'UTF-8',
+//                 Data: 'Change your password'
+//             }
+//         }
+//     };
+
+// }
+
+// module.exports = forgotPasswordEmailParams
+

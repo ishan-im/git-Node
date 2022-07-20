@@ -11,6 +11,10 @@ const { nanoid } = require('nanoid')
 
 const regiterEmailParams = require('../helpers/email')
 
+
+const _ = require('lodash')
+
+
 AWS.config.update(
     {
         accessKeyId: process.env.AMAZON_ACCESS_KEY_ID,
@@ -329,5 +333,219 @@ exports.canUpdateDeleteLink = (req,res,next)=>{
 
     })
 
+
+}
+
+
+
+
+exports.forgotPassword = (req,res) =>{
+    
+    const {email} = req.body;
+
+// check if user exists with that email
+
+
+
+ User.findOne({email}).exec((err, user) => {
+
+    
+
+    if (err || !user) {
+
+        console.log(err);
+
+        return res.status(400).json({
+
+            error: 'User with that email does not exist'
+
+        });
+    }
+    // generate token and email to user
+
+    console.log('forget pssword user: ', user);
+
+    const token = jwt.sign({ name: user.name , email}, process.env.JWT_RESET_PASSWORD, { expiresIn: '10m' });
+
+    console.log('token:', token);
+
+    // send email
+    const params = forgotPasswordEmailParams(email, token);
+
+    // populate the db > user > resetPasswordLink
+
+
+    
+
+
+    // const sendEmail = ses.sendEmail(params).promise();
+
+    // sendEmail
+    //     .then(data => {
+    //         console.log('ses reset pw success', data);
+
+    //         return res.json({
+    //             message: `Email has been sent to ${email}. Click on the link to reset your password`
+    //         });
+    //     })
+    //     .catch(error => {
+    //         console.log('ses reset pw failed', error);
+    //         return res.json({
+    //             message: `We could not vefiry your email. Try later.`
+    //         });
+    //     })
+
+     return user.updateOne({ resetPasswordLink: token }, (err, success) => {
+
+        if (err) {
+
+            console.log(err);
+
+            return res.status(400).json({
+
+                error: 'Password reset failed. Try later.'
+
+            });
+        }
+
+        const sendEmail = ses.sendEmail(params).promise();
+
+        sendEmail
+            .then(data => {
+                console.log('ses reset pw success', data);
+
+                return res.json({
+                    message: `Email has been sent to ${email}. Click on the link to reset your password`
+                });
+            })
+            .catch(error => {
+                console.log('ses reset pw failed', error);
+                return res.json({
+                    message: `We could not vefiry your email. Try later.`
+                });
+            });
+    });
+
+});
+
+}
+
+
+exports.resetPassword = (req,res)=>{
+
+    const {resetPasswordLink, newPassword} = req.body
+
+    if(resetPasswordLink){
+
+        //check for expiary
+
+        jwt.verify(resetPasswordLink, process.env.JWT_RESET_PASSWORD, (error,success)=>{
+
+            if(error){
+
+                
+                console.log(error);
+    
+                return res.status(400).json({
+    
+                    error: 'Link expired ,Try later.'
+    
+                });
+
+            }
+
+            User.findOne({resetPasswordLink}).exec((error,user)=>{
+
+                if (error || !user) {
+    
+                    console.log(error);
+        
+                    return res.status(400).json({
+        
+                        error: 'Invalid Token. Try later.'
+        
+                    });
+                }
+
+
+                const updatedFields = {
+
+                    password: newPassword,
+                    resetPasswordLink: ""
+                }
+
+
+                user = _.extend(user, updatedFields)
+
+
+                user.save((error,result)=>{
+
+
+                    if (error) {
+    
+                        console.log(error);
+            
+                        return res.status(400).json({
+            
+                            error: 'Password reset failed. Try later.'
+            
+                        });
+                    }
+
+
+                    res.json({
+                        message: 'Password reset success, login with new passowrd'
+                    })
+
+                })
+                
+
+    
+            })
+    
+
+
+        })
+
+      
+    }
+
+}
+
+
+
+
+
+
+
+
+
+const forgotPasswordEmailParams = (email, token)=>{
+
+    return {
+        Source: process.env.EMAIL_FROM,
+        Destination: {
+            ToAddresses: [email]
+        },
+        ReplyToAddresses: [process.env.EMAIL_FROM],
+        Message: {
+            Body: {
+                Html: {
+                    Charset: 'UTF-8',
+                    Data: `
+                        <html>
+                            <h1>Reset Password Link</h1>
+                            <p>Please use the following link to reset your password:</p>
+                            <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+                        </html>
+                    `
+                }
+            },
+            Subject: {
+                Charset: 'UTF-8',
+                Data: 'Change your password'
+            }
+        }
+    };
 
 }

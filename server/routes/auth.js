@@ -17,12 +17,8 @@ router.post('/register/activate', register.registerActivate)
 
 router.post('/login', userRegister.userLoginValidator, runValidation, register.registerLogin)
 
-router.get('/secret', register.requireSignIn,(req,res,next)=>{
+router.put('/forgot-password', userRegister.forgotPasswordValidator, runValidation, register.forgotPassword)
 
-    res.json({
-        data: "this is for signed in user only"
-    })
-
-})
+router.put('/reset-password', userRegister.resetPasswordValidator, runValidation, register.resetPassword)
 
 module.exports = router;

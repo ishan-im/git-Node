@@ -251,8 +251,10 @@ const loadCategories = async ()=>{
   return (
       <Fragment>
         <div className="container p-5">
+          
           {success && showSuccessMessage(success)}
           {error && showErrorMessage(error)}
+          
           {registrationForm()}
           </div>
       </Fragment>)

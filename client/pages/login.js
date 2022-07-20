@@ -2,7 +2,7 @@ import { Fragment, useState , useEffect} from "react"
 
 import axios from 'axios'
 
-
+import Link from 'next/link'
 
 
 import Router from "next/router"
@@ -150,6 +150,13 @@ const Login =  ()=>{
           {success && showSuccessMessage(success)}
           {error && showErrorMessage(error)}
           {LogInForm()}
+
+          
+          <Link href="/auth/password/forgot">
+              <a className="text-danger float-right">Forgot Password</a>
+
+          </Link>
+          
           </div>
       </Fragment>)
 };
