@@ -149,7 +149,7 @@ const Login =  ()=>{
 
   return (
       <Fragment>
-        <div className="container p-5">
+        <div className="container p-3">
 
           <h1 style={{"display": "flex", "justifyContent": "center"}}>Log In</h1>
             

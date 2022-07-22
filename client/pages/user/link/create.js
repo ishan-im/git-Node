@@ -58,7 +58,7 @@ const Create = ({token}) => {
 
         console.log('loaded categories: ',response);
 
-        setState({...state, loadedCategories: response.data, buttonText:'Submit Link', title: '', url: ''})
+        setState({...state, loadedCategories: response.data, buttonText:'Submit Link'})
 
 
     }

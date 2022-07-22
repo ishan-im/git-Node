@@ -230,7 +230,7 @@ const handleClick = async(id) =>{
 
        
        <div className={`container ${classes.container__placement}`}>
-       <div className={`row ${classes.category__list}`}>
+       <div className={`row my-4 ${classes.category__list}`}>
         
         {listOfCategories()}
        
@@ -238,7 +238,7 @@ const handleClick = async(id) =>{
 
        </div>
 
-       <div className="text-center mt-5">
+       <div className="text-center my-5">
           {loadMoreButton()}
         </div>
 

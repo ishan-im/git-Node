@@ -29,8 +29,6 @@ exports.createLink = (req,res)=>{
     const {title, url, categories, type, medium} = req.body
 
     
-
-
     const slug = (title)
 
     let link = new Link({title, url, categories, type, medium, slug})
@@ -72,7 +70,7 @@ exports.createLink = (req,res)=>{
 
         console.log('testing');
 
-        User.find({Category: {$in : categories}}).exec((err,user)=>{
+        User.find({categories: {$in : categories}}).exec((err,user)=>{
 
             console.log('testing user', user);
 

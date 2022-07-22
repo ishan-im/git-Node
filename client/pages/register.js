@@ -250,7 +250,7 @@ const loadCategories = async ()=>{
 
   return (
       <Fragment>
-        <div className="container p-5">
+        <div className="container p-3">
           
           {success && showSuccessMessage(success)}
           {error && showErrorMessage(error)}

@@ -12,7 +12,6 @@ import moment from "moment";
 
 import Dashboard from "../../components/Dashboard";
 
-import { Duration } from "luxon";
 
 
 
@@ -137,7 +136,7 @@ const User = ({user, userLinks, token}) =>{
     const listOfLinks = ()=> userLinks.map((link, index)=>(
 
        
-        <div  className="row alert alert-primary p-2" key={index}>
+        <div  className="row alert alert-primary p-2 overflow-hidden" key={index}>
 
             <div className="col-md-8">
                 <a href={link.url} target='_blank' >

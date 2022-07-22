@@ -61,7 +61,7 @@ const linkPublishedParams = (email, data)=>{
                 Html:{
                     Charset: 'UTF-8',
                     Data: `<html>
-                                  <h1>New Link Published | gitnode.tech</h1 style="color:red;">
+                                  <h1 style="color:#2C3639">New Link Published | <a href="gitnode.tech" style="color:#FFC107; font-size: 30px; text-decoration: none">gitNode</a></h1>
                                   <p>A new link titled <b>${data.title}</b> has been published in the following categories</p>
 
                                   ${data.categories.map(c => {
