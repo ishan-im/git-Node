@@ -156,6 +156,8 @@ const Update = ({token, oldLink}) => {
 
         e.preventDefault();
 
+        setButtonText('Updating Link')
+
         let dynamicLink
 
         if(isAuth() && isAuth().role === 'admin'){

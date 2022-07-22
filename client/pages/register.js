@@ -15,9 +15,9 @@ const Register = () => {
 
   const [state, setState] = useState({
 
-    name: "Ishan",
-    email: "ishanmondal713127@gmail.com",
-    password: "12345678",
+    name: "",
+    email: "",
+    password: "",
     error: "",
     buttonText: "Sign UP",
     success: "",
@@ -77,7 +77,7 @@ const loadCategories = async ()=>{
 
     setState({
       ...state,
-      buttonText: 'Registering'
+      buttonText: 'Signing UP'
     })
     try{
 

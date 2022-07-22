@@ -100,38 +100,31 @@ const Read = ({token}) =>{
           <Link href={`/links/${c.slug}`} key={i}>
             <a
 
-              className={` col-md-6  ${classes.item__link}`}
+              className={` col-lg-4 col-md-6  ${classes.item__link}`}
               
             >
               
                 <div className="row" >
                   <div 
-                      className="col-md-4" 
-                      style={{
-                        display:'flex',
-                        alignItems:'center',
-                       }}>
-                    <img className="img-fluid" src={c.image.url} alt={c.slug} />
+                      className="col-3" 
+                     >
+                    <img className={` ${classes.image}`}  src={c.image.url} alt={c.slug} />
                   </div>
     
                   <div
                     key={c.name}
-                     className="col-md-5"
-                     style={{
-                      display:'flex',
-                      alignItems:'center',
-                     }}
+                    className='col-5'
                      >
-                    <p key={c._id}>{c.name}</p>
+                    <p className={classes.paragraph} key={c._id}>{c.name}</p>
                   </div>
 
                   <div className="col-md-3">
 
                     <Link href={`/admin/category/${c.slug}`}>
-                        <button className="btn btn-sm btn-outline-success btn-block mb-2">Update</button>
+                        <button className="btn btn-sm btn-outline-success">Update</button>
                     </Link>
 
-                    <button className="btn btn-sm btn-outline-danger btn-block" onClick={(e)=> confirmDelete(e,c.slug)}>
+                    <button className="btn btn-sm btn-outline-danger " onClick={(e)=> confirmDelete(e,c.slug)}>
                         Delete
                     </button>
 

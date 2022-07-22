@@ -1,9 +1,11 @@
 
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 import Link from 'next/link'
 
 import classes from './Layout.module.css'
+
+import { useRouter } from 'next/router';
 
 
 import { isAuth , logOut } from '../helpers/auth';
@@ -14,8 +16,30 @@ import {FaPlus} from 'react-icons/fa'
 
 import {BiGitMerge} from 'react-icons/bi'
 
+import {BsSearch} from 'react-icons/bs'
+
 
 const Layout = ()=>{
+
+  const router = useRouter()
+
+  const [searchQuery,setSearchQuery] = useState('')
+
+  const handleSubmit = (e)=>{
+
+    e.preventDefault();
+
+    router.push({
+
+      pathname: `search/${searchQuery}`,
+
+    })
+
+
+    setSearchQuery('')
+
+
+  }
 
     
 
@@ -116,7 +140,7 @@ const Layout = ()=>{
 
     const header = () => (
 
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+      <nav className="navbar navbar-expand-lg bg-dark navbar-dark sticky-top" >
         <div className="container">
 
         <button
@@ -143,7 +167,7 @@ const Layout = ()=>{
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
 
             {isAuth() &&
-            (<ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            (<ul className={`navbar-nav me-auto mb-2 mb-lg-0 ${classes.submit__link}`}>
               <li className="nav-item">
                 <Link href="/user/link/create">
                   <a className="nav-link text-white"><FaPlus/> Submit Tutorial Link</a>
@@ -152,8 +176,19 @@ const Layout = ()=>{
             </ul>)
             }
 
+
+     {isAuth() && isAuth().role === 'admin' &&
+            (<ul className={`navbar-nav me-5 mb-2 mb-lg-0 ${classes.submit__link}`}>
+              <li className="nav-item">
+                <Link href="/admin/category/create">
+                  <a className="nav-link text-white"><FaPlus/> Create Category</a>
+                </Link>
+              </li>
+            </ul>)
+            }
+
           {!isAuth() &&
-            (<ul className="navbar-nav me-auto mb-2 mb-lg-0">
+            (<ul className={`navbar-nav me-auto mb-2 mb-lg-0 ${classes.submit__link}`}>
               <li className="nav-item">
                 <Link href="/user/create">
                   <a className="nav-link text-white"><FaPlus/> Submit Tutorial Link</a>
@@ -163,15 +198,17 @@ const Layout = ()=>{
             }
 
 
-            <form className="d-flex" role="search">
+            <form className="d-flex" role="search" onSubmit={handleSubmit}>
               <input
                 className="form-control me-2"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
+                onChange={(e)=>setSearchQuery(e.target.value)}
+                value={searchQuery}
               />
-              <button className="btn  btn-outline-warning" type="submit">
-                Search
+              <button className="btn  btn-outline-warning" type="submit" style={{borderWidth : '0px'}}>
+              <BsSearch/>
               </button>
             </form>
 

@@ -139,6 +139,14 @@ const Create = ({token}) => {
 
         e.preventDefault();
 
+        setState({
+
+          ...state,
+          buttonText: 'Submitting Link',
+          success: '',
+          error: ''
+        })
+
         // console.table({title,url,type,medium,categories})
 
         try{

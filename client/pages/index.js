@@ -18,7 +18,7 @@ import {GrCode} from 'react-icons/gr'
 
 export const getServerSideProps = async ({req,res}) => {
 
-  let limit = 4;
+  let limit = 6;
 
   let skip = 0;
 

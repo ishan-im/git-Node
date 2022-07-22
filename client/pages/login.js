@@ -20,8 +20,8 @@ const Login =  ()=>{
 
   const [state, setState] = useState({
     
-    email: "ishanmondal713127@gmail.com",
-    password: "12345678",
+    email: "",
+    password: "",
     error: "",
     buttonText: "Log In",
     success: ""
@@ -136,7 +136,13 @@ const Login =  ()=>{
         <button type="submit" className="btn btn-outline-primary btn-sm">
           {buttonText}
         </button>
+
+        <Link href="/auth/password/forgot">
+              <a className="text-danger my-3" style={{display: 'flex', alignItems: 'center', justifyContent: 'flex-end', textDecoration: 'none'}}>Forgot Password</a>
+          </Link>
       </div>
+
+      
     </form>
     
   );
@@ -152,10 +158,7 @@ const Login =  ()=>{
           {LogInForm()}
 
           
-          <Link href="/auth/password/forgot">
-              <a className="text-danger float-right">Forgot Password</a>
-
-          </Link>
+         
           
           </div>
       </Fragment>)

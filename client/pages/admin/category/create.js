@@ -134,7 +134,7 @@ const Create = ({token}) =>{
 
         // console.table(name,content,image)
 
-        setState({...state, buttonText : 'Creating'})
+        setState({...state, buttonText : 'Creating Category'})
 
         try{
 
@@ -153,7 +153,7 @@ const Create = ({token}) =>{
 
             
 
-            setState({...state, name:'', buttonText: 'Created', imgaeUploadText: 'Upload Image', success: `${response.data.name} is created!` })
+            setState({...state, name:'', buttonText: 'Created!', imgaeUploadText: 'Upload Image', success: `${response.data.name} is created!` })
 
             setContent('')
 
