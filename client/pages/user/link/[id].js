@@ -72,7 +72,7 @@ const Update = ({token, oldLink}) => {
         console.log('loaded categories: ',response);
 
         setState({...state, loadedCategories: response.data})
-
+        
 
     }
 
@@ -85,6 +85,7 @@ const Update = ({token, oldLink}) => {
      const handleTitleChange = e => {
 
       setState({...state, title:e.target.value, success:'',error:''})
+      setButtonText('Update Link')
 
   }
 
@@ -95,7 +96,7 @@ const Update = ({token, oldLink}) => {
   const handleURLChange =  e => {
 
       setState({...state, url:e.target.value,success:'',error:''})
-
+      setButtonText('Update Link')
   }
 
   // checkbox controller function
@@ -191,7 +192,6 @@ const Update = ({token, oldLink}) => {
             url: response.data.url,
             success: "Link updated successfully!",
             error: "",
-            loadedCategories: [],
             categories: response.data.categories,
             type: response.data.type,
             medium:  response.data.medium

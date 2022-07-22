@@ -38,7 +38,7 @@ const Create = ({token}) =>{
     const [state, setState] = useState({
 
         name:'',
-        buttonText:'Create',
+        buttonText:'Create Category',
         image:'',
         imgaeUploadText:'Upload Image',
         success:'',
@@ -60,7 +60,7 @@ const Create = ({token}) =>{
 
         const value =  e.target.value
 
-        setState({...state, [name]: value, error:'', success: '',error:''})
+        setState({...state, [name]: value, error:'', success: '',error:'',buttonText:'Create Category'})
 
         
 
@@ -71,7 +71,9 @@ const Create = ({token}) =>{
 
       setContent(e.replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;"));
 
-      setState({...state, success:'',error:''})
+      setState({...state, success:'',error:'', buttonText: 'Create Category'})
+
+      
 
     }
 
@@ -107,7 +109,7 @@ const Create = ({token}) =>{
 
               console.log(uri);
 
-              setState({...state, image: uri, success:'', error:''})
+              setState({...state, image: uri, success:'', error:'',buttonText: 'Create Category'})
               
             },
 
@@ -134,7 +136,7 @@ const Create = ({token}) =>{
 
         // console.table(name,content,image)
 
-        setState({...state, buttonText : 'Creating Category'})
+        setState({...state, buttonText : 'Creating Category', success: '', error: '', imgaeUploadText: 'Uploading Image'})
 
         try{
 
@@ -153,9 +155,9 @@ const Create = ({token}) =>{
 
             
 
-            setState({...state, name:'', buttonText: 'Created!', imgaeUploadText: 'Upload Image', success: `${response.data.name} is created!` })
+            setState({...state, name:" ", buttonText: 'Created!', imgaeUploadText: 'Upload Image', success: `${response.data.name} is created!` })
 
-            setContent('')
+            setContent(" ")
 
             setImageUploadState('Upload Image')
            
@@ -184,6 +186,7 @@ const Create = ({token}) =>{
               </label>
               <input
                 onChange={handleChange("name")}
+                value={name}
                 type="text"
                 className="form-control"
                 placeholder="Category Name"
@@ -246,7 +249,7 @@ const Create = ({token}) =>{
 
     return (
         <Fragment>
-            <div className="row container-fluid">
+            <div className="row container-fluid p-5">
                 <div className="col-md-6 offset-md-3">
                     <h1 className="mb-3  offset-md-3">Create Category</h1>
                     <br />

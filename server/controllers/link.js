@@ -92,7 +92,7 @@ exports.createLink = (req,res)=>{
 
                 console.log('testing result : ', result);
 
-               data.categories = result 
+                data.categories = result 
 
 
                for(let i=0; i<user.length; i++){

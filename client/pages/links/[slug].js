@@ -22,7 +22,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 export async function getServerSideProps({req,query}) {
 
     let skip = 0
-    let limit = 3
+    let limit = 5
 
     const response = await axios.post(`http://localhost:8080/api/category/${query.slug}`,{skip,limit})
 
@@ -286,7 +286,7 @@ const Links = ({query, category,links,totalLinks,skip,limit})=>{
           <InfiniteScroll  pageStart={0}
                loadMore={loadMore}
                hasMore={hasMore}
-               loader={<img key={10} className='loader' height={40} width={40} src={loading} alt='loading'/>}
+               loader={<h3 key={10} className='loader'>Loading...</h3>}
                >
 
                {listOfLinks()}

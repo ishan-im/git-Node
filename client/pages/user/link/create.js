@@ -58,7 +58,7 @@ const Create = ({token}) => {
 
         console.log('loaded categories: ',response);
 
-        setState({...state, loadedCategories: response.data})
+        setState({...state, loadedCategories: response.data, buttonText:'Submit Link', title: '', url: ''})
 
 
     }
@@ -109,7 +109,7 @@ const Create = ({token}) => {
 
       console.log('all categories >> ',all);
 
-      setState({...state, categories:all, success:'', error:''})
+      setState({...state, categories:all, success:'', error:'', buttonText: 'Submit Link'})
 
   }
 
@@ -117,7 +117,7 @@ const Create = ({token}) => {
 
   const handleTypeClick = (e)=> {
 
-      setState({...state, type: e.target.value, success:'',error:''})
+      setState({...state, type: e.target.value, success:'',error:'', buttonText: 'Submit Link'})
 
   }
 
@@ -126,7 +126,7 @@ const Create = ({token}) => {
 
   const handleMediumClick = (e)=> {
 
-      setState({...state, medium: e.target.value, success:'',error:''})
+      setState({...state, medium: e.target.value, success:'',error:'', buttonText: 'Submit Link'})
 
   }
 
@@ -170,9 +170,6 @@ const Create = ({token}) => {
             url: "",
             success: 'Link Created Successfully!',
             error: "",
-            categories: [],
-            type: "",
-            medium: "",
             buttonText: 'Link Created!'
           });
 

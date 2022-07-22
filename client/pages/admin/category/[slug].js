@@ -76,7 +76,7 @@ const Update = ({token, oldCategory}) =>{
 
     const handleContent = (e) =>{
 
-      setContent(e)
+      setContent(e.replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;"));
 
       setState({...state, success:'',error:''})
 
@@ -216,7 +216,7 @@ const Update = ({token, oldCategory}) =>{
 
               <ReactQuill
                 onChange={handleContent}
-                value={content}
+                defaultValue={content}
                 className={`form-control ${classes.react__quill}`}
                 placeholder="Write Your Content"
                 theme="bubble"

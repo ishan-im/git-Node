@@ -177,6 +177,17 @@ const Layout = ()=>{
             }
 
 
+{isAuth() && isAuth().role === 'admin' &&
+            (<ul className={`navbar-nav me-5 mb-2 mb-lg-0 ${classes.submit__link}`}>
+              <li className="nav-item">
+                <Link href="/admin/category/read">
+                  <a className="nav-link text-white"><FaPlus/> Update</a>
+                </Link>
+              </li>
+            </ul>)
+            }
+
+
      {isAuth() && isAuth().role === 'admin' &&
             (<ul className={`navbar-nav me-5 mb-2 mb-lg-0 ${classes.submit__link}`}>
               <li className="nav-item">
@@ -198,7 +209,7 @@ const Layout = ()=>{
             }
 
 
-            <form className="d-flex" role="search" onSubmit={handleSubmit}>
+            {/* <form className="d-flex" role="search" onSubmit={handleSubmit}>
               <input
                 className="form-control me-2"
                 type="search"
@@ -210,7 +221,7 @@ const Layout = ()=>{
               <button className="btn  btn-outline-warning" type="submit" style={{borderWidth : '0px'}}>
               <BsSearch/>
               </button>
-            </form>
+            </form> */}
 
             <div className={classes.user__prof}>
 
